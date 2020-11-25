@@ -9,15 +9,24 @@ public class Main {
         Scanner sc=new Scanner(System.in);
         BankAccount bankAccount=new BankAccount();
         bankAccount.deposit(20000);
-       while(bankAccount.getAmount()>0){
+       while(true){
             System.out.println("Осталось:"+bankAccount.getAmount()+"|сом");
             try{
-                double temp;
-                bankAccount.withDraw(temp=sc.nextDouble());
+                bankAccount.withDraw(sc.nextDouble());
             }catch (LimitException e){
                 System.out.println(e.getMessage());
+                System.out.println("Снято:"+bankAccount.getAmount());
+                try {
+                    bankAccount.withDraw(bankAccount.getAmount());
+                } catch (LimitException e1) {
+                    e1.printStackTrace();
+                }
+            }finally
+            {
+                if(bankAccount.getAmount()==0){
+                    break;
+                }
             }
         }
-        System.out.println("Баланс:"+bankAccount.getAmount()+"|cом");
     }
 }
